@@ -43,7 +43,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in Return.");
+		return value.collectAndPartialResolve(_scope);
 	}
 	
 	/* (non-Javadoc)
@@ -51,7 +51,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in Return.");
+		return value.completeResolve(_scope);
 	}
 	
 	@Override

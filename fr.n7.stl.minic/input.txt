@@ -1,6 +1,5 @@
 monProgramme {
-    int j = 0;
-    if (j == 0) {
-        j = 4;
-    }
+    int j[] = {5,3};
+    j[1] = 3;
+    return j;
 }

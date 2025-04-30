@@ -38,7 +38,7 @@ public class Printer implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in Printer.");
+		return parameter.collectAndPartialResolve(_scope);
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class Printer implements Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in Printer.");
+		return parameter.completeResolve(_scope);
 	}
 
 	/* (non-Javadoc)

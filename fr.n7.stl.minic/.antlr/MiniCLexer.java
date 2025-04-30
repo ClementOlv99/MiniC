@@ -1,4 +1,4 @@
-// Generated from /home/lor3307/Documents/N7/2A/tp-STDL/fr.n7.stl.minic/MiniCLexer.g4 by ANTLR 4.13.1
+// Generated from /home/lor3307/Documents/N7/2A/MiniC/fr.n7.stl.minic/MiniCLexer.g4 by ANTLR 4.13.1
 
 package fr.n7.stl.minic.parser;
 
