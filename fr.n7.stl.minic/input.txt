@@ -1,0 +1,6 @@
+monProgramme {
+    int j = 0;
+    if (j == 0) {
+        j = 4;
+    }
+}
