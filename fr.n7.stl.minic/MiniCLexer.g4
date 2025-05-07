@@ -19,6 +19,7 @@ PointVirgule: ';';
 Afficher: 'print';
 Si: 'if';
 Sinon: 'else';
+TantQue: 'while';
 Retour: 'return';
 DefinitionConstante: 'const';
 DefinitionType: 'typedef';

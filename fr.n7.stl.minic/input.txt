@@ -1,5 +1,11 @@
 monProgramme {
-    int j[] = {5,3};
-    j[1] = 3;
-    return j;
+    int j = 0;
+    if (j == 0) {
+        j=1;
+    }
+
+    while (j < -10) {
+        j=j-1;
+    }
+
 }

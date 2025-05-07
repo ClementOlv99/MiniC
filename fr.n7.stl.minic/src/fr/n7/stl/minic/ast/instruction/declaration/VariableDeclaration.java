@@ -135,7 +135,7 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException("Semantics checkType is undefined in VariableDeclaration.");
+		return type.equalsTo(value.getType());
 	}
 
 	/* (non-Javadoc)
@@ -143,7 +143,9 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in VariableDeclaration.");
+		this.register = _register;
+		this.offset = _offset;
+		return type.length();
 	}
 
 	/* (non-Javadoc)
@@ -151,7 +153,9 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode is undefined in VariableDeclaration.");
+		Fragment fragment = _factory.createFragment();
+		fragment.add(_factory.);
+		return fragment;
 	}
 
 }

@@ -3,14 +3,13 @@
  */
 package fr.n7.stl.minic.ast.instruction;
 
-import java.util.Optional;
-
 import fr.n7.stl.minic.ast.Block;
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.AtomicType;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -51,8 +50,12 @@ public class Conditional implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-
-		return this.condition.collectAndPartialResolve(_scope) && this.thenBranch.collectAndPartialResolve(_scope) && this.elseBranch.collectAndPartialResolve(_scope);
+		if (elseBranch == null) {
+			return this.condition.collectAndPartialResolve(_scope) && this.thenBranch.collectAndPartialResolve(_scope);
+		} else {
+			return this.condition.collectAndPartialResolve(_scope) && this.thenBranch.collectAndPartialResolve(_scope) && this.elseBranch.collectAndPartialResolve(_scope);
+		}
+		
 	
 	}
 	
@@ -69,7 +72,11 @@ public class Conditional implements Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		return this.condition.completeResolve(_scope) && this.thenBranch.completeResolve(_scope) && this.elseBranch.completeResolve(_scope);
+		if (elseBranch == null) {
+			return this.condition.completeResolve(_scope) && this.thenBranch.completeResolve(_scope);
+		} else {
+			return this.condition.completeResolve(_scope) && this.thenBranch.completeResolve(_scope) && this.elseBranch.completeResolve(_scope);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -77,7 +84,11 @@ public class Conditional implements Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in Conditional.");
+		if (elseBranch == null) {
+			return this.condition.getType().equalsTo(AtomicType.BooleanType) && this.thenBranch.checkType();
+		} else {
+			return this.condition.getType().equalsTo(AtomicType.BooleanType) && this.thenBranch.checkType() && this.elseBranch.checkType();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -85,7 +96,16 @@ public class Conditional implements Instruction {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in Conditional.");
+
+		if (elseBranch == null) {
+			thenBranch.allocateMemory(_register, _offset);
+			return 0;
+		} else {
+			thenBranch.allocateMemory(_register, _offset);
+			elseBranch.allocateMemory(_register, _offset);
+			return 0;
+		}
+		
 	}
 
 	/* (non-Javadoc)

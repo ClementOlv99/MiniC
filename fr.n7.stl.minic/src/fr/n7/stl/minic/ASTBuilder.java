@@ -47,17 +47,17 @@ public class ASTBuilder extends MiniCParserBaseListener {
             System.out.println("collect succeeded");
             if (this.mainBlock.completeResolve(tds)) {
                 System.out.println("Resolve succeeded.");
-                /* if (this.mainBlock.checkType()) {
+                if (this.mainBlock.checkType()) {
                     System.out.println("Type verification succeeded.");
 
-                    System.out.println("Code generation ...");
+                    System.out.println("Cod    | Si ParentheseOuvrante expression ParentheseFermante alors=bloc #instructionSiSansSinone generation ...");
                     this.mainBlock.allocateMemory(Register.SB, 0);
                     try {
                         PrintWriter writer = new PrintWriter(output_path);
                         TAMFactory factory = new TAMFactoryImpl();
                         Fragment f = this.mainBlock.getCode(factory);
                         f.add(factory.createHalt());
-                        f.append(this.mainBlock.getFunctions(factory));
+                        // f.append(this.mainBlock.getFunctions(factory));
                         writer.println(f);
                         writer.close();
                     } catch (IOException e) {
@@ -68,7 +68,6 @@ public class ASTBuilder extends MiniCParserBaseListener {
                 } else {
                     System.out.println("Type verification failed.");
                 }
-                */
             } else {
                 System.out.println("Resolve failed." + tds);
             }
@@ -161,6 +160,19 @@ public class ASTBuilder extends MiniCParserBaseListener {
     public void exitInstructionSiSinon(InstructionSiSinonContext ctx) {
             ctx.i = new Conditional(ctx.expression().e, ctx.alors.b, ctx.sinon.b);
     }
+
+    @Override
+    public void exitInstructionSiSansSinon(InstructionSiSansSinonContext ctx) {
+            ctx.i = new Conditional(ctx.expression().e, ctx.alors.b);
+    }
+
+    @Override 
+    public void exitInstructionTantQue(InstructionTantQueContext ctx) {
+
+        ctx.i = new Iteration(ctx.expression().e, ctx.do_.b);
+    
+    }
+
 
     @Override
     public void exitInstructionReturn(InstructionReturnContext ctx) {

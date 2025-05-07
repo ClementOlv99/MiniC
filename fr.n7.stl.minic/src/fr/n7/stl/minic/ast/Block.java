@@ -3,8 +3,6 @@
  */
 package fr.n7.stl.minic.ast;
 
-import java.util.List;
-
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
@@ -12,6 +10,8 @@ import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+
+import java.util.List;
 
 /**
  * Represents a Block node in the Abstract Syntax Tree node for the Bloc language.
@@ -99,7 +99,11 @@ public class Block {
 	 * @return Synthesized True if the instruction is well typed, False if not.
 	 */	
 	public boolean checkType() {
-		throw new SemanticsUndefinedException("Semantics checkType is undefined in Block.");
+		boolean ok = true;
+		for (Instruction i : this.instructions) {
+			ok = ok && i.checkType();
+		}
+		return ok;
 	}
 
 	/**
@@ -109,7 +113,10 @@ public class Block {
 	 * @param _offset Inherited Current offset for the address of the variables.
 	 */	
 	public void allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException("Semantics allocateMemory is undefined in Block.");
+		int taille = 0;
+		for (Instruction i : this.instructions) {
+			taille += i.allocateMemory(_register, taille + _offset);
+		}
 	}
 
 	/**
@@ -119,7 +126,10 @@ public class Block {
 	 * @return Synthesized AST for the generated TAM code.
 	 */
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics generateCode is undefined in Block.");
+		Fragment fragment = _factory.createFragment();
+		for (Instruction i : this.instructions) {
+			fragment.append(i.getCode(_factory));
+		}
+		return fragment;
 	}
-
 }

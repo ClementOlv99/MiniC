@@ -43,6 +43,7 @@ instruction returns [Instruction i]:
     | Afficher expression PointVirgule #instructionAffichage
     | Si ParentheseOuvrante expression ParentheseFermante alors=bloc Sinon sinon=bloc #instructionSiSinon
     | Si ParentheseOuvrante expression ParentheseFermante alors=bloc #instructionSiSansSinon
+    |TantQue ParentheseOuvrante expression ParentheseFermante do=bloc #instructionTantQue
     | Retour expression PointVirgule #instructionReturn
 ;
 
