@@ -3,9 +3,5 @@ monProgramme {
     if (j == 0) {
         j=1;
     }
-
-    while (j < -10) {
-        j=j-1;
-    }
-
+    print j;
 }
