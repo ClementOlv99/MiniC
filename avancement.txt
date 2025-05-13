@@ -1,0 +1,49 @@
+	/* (non-Javadoc)
+	 * @see fr.n7.stl.block.ast.Instruction#checkType()
+	 */
+	@Override
+	public boolean checkType() {
+		return (parameter.getType().equals(AtomicType.BooleanType)||parameter.getType().equals(AtomicType.CharacterType)||parameter.getType().equals(AtomicType.IntegerType));
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.n7.stl.block.ast.Instruction#allocateMemory(fr.n7.stl.tam.ast.Register, int)
+	 */
+	@Override
+	public int allocateMemory(Register _register, int _offset) {
+		return 0;
+	}
+
+	/* (non-Javadoc)
+	 * @see fr.n7.stl.block.ast.Instruction#getCode(fr.n7.stl.tam.ast.TAMFactory)
+	 */
+	@Override
+	public Fragment getCode(TAMFactory _factory) {
+		Fragment fragment = _factory.createFragment();
+		fragment.addComment(this.toString());
+		fragment.addComment("à vérifier");
+		fragment.append(parameter.getCode(_factory));
+		if (parameter.getType().equals(AtomicType.BooleanType)) {
+			fragment.add(Library.BOut);
+		} else if (parameter.getType().equals(AtomicType.CharacterType)) {
+			fragment.add(Library.COut);
+		} else{
+			fragment.add(Library.IOut);
+		}
+		fragment.addComment("fin à vérifier");
+		return fragment;
+	}
+	
+	ITERATION***********************************
+	
+		Fragment fragment = _factory.createFragment();
+		fragment.addComment(this.toString());
+		fragment.addComment("à vérifier");
+		fragment.addSuffix("BEGIN WHILE");
+		fragment.append(condition.getCode(_factory));
+		fragment.add(_factory.createJumpIf("END WHILE", 0));
+		fragment.append(body.getCode(_factory));
+		fragment.add(_factory.createJump("BEGIN WHILE"));
+		fragment.addSuffix("END WHILE");
+		fragment.addComment("fin à vérifier");
+		return fragment;
