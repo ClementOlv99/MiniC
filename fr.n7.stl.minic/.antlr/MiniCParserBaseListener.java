@@ -1,4 +1,4 @@
-// Generated from /home/lor3307/Documents/N7/2A/tp-STDL/fr.n7.stl.minic/MiniCParser.g4 by ANTLR 4.13.1
+// Generated from /home/tgz8009/projetmaj/ProjetMiniC/MiniC/fr.n7.stl.minic/MiniCParser.g4 by ANTLR 4.13.1
 
 package fr.n7.stl.minic.parser;
 import java.io.IOException;
@@ -141,6 +141,30 @@ public class MiniCParserBaseListener implements MiniCParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInstructionSiSinon(MiniCParser.InstructionSiSinonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInstructionSiSansSinon(MiniCParser.InstructionSiSansSinonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInstructionSiSansSinon(MiniCParser.InstructionSiSansSinonContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInstructionTantQue(MiniCParser.InstructionTantQueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInstructionTantQue(MiniCParser.InstructionTantQueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

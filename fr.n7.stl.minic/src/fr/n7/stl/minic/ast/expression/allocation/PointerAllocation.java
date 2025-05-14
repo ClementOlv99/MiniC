@@ -38,7 +38,7 @@ public class PointerAllocation implements AccessibleExpression, AssignableExpres
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in PointerAllocation.");
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -46,7 +46,7 @@ public class PointerAllocation implements AccessibleExpression, AssignableExpres
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in PointerAllocation.");
+		return element.completeResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -54,7 +54,7 @@ public class PointerAllocation implements AccessibleExpression, AssignableExpres
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in PointerAllocation.");
+		return element;
 	}
 
 	/* (non-Javadoc)

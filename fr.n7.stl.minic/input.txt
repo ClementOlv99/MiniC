@@ -1,4 +1,4 @@
 monProgramme {
-   boolean i = true;
-   int g = (int) i;
+   int c = 1;
+   int *b = new int();
 }

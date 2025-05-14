@@ -1,4 +1,4 @@
-// Generated from /home/lor3307/Documents/N7/2A/tp-STDL/fr.n7.stl.minic/MiniCParser.g4 by ANTLR 4.13.1
+// Generated from /home/tgz8009/projetmaj/ProjetMiniC/MiniC/fr.n7.stl.minic/MiniCParser.g4 by ANTLR 4.13.1
 
 package fr.n7.stl.minic.parser;
 import java.io.IOException;
@@ -130,6 +130,30 @@ public interface MiniCParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInstructionSiSinon(MiniCParser.InstructionSiSinonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code instructionSiSansSinon}
+	 * labeled alternative in {@link MiniCParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstructionSiSansSinon(MiniCParser.InstructionSiSansSinonContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code instructionSiSansSinon}
+	 * labeled alternative in {@link MiniCParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstructionSiSansSinon(MiniCParser.InstructionSiSansSinonContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code instructionTantQue}
+	 * labeled alternative in {@link MiniCParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstructionTantQue(MiniCParser.InstructionTantQueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code instructionTantQue}
+	 * labeled alternative in {@link MiniCParser#instruction}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstructionTantQue(MiniCParser.InstructionTantQueContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code instructionReturn}
 	 * labeled alternative in {@link MiniCParser#instruction}.
