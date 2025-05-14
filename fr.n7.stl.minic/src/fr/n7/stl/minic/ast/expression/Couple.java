@@ -3,7 +3,6 @@
  */
 package fr.n7.stl.minic.ast.expression;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
@@ -80,7 +79,10 @@ public class Couple implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in Couple.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(first.getCode(_factory));
+		fragment.append(second.getCode(_factory));
+		return fragment;
 	}
 
 }

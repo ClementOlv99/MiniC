@@ -3,8 +3,8 @@
  */
 package fr.n7.stl.minic.ast.expression.accessible;
 
-import fr.n7.stl.minic.ast.expression.AbstractIdentifier;
 import fr.n7.stl.minic.ast.expression.AbstractAccess;
+import fr.n7.stl.minic.ast.expression.AbstractIdentifier;
 import fr.n7.stl.minic.ast.instruction.declaration.ConstantDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;

@@ -81,6 +81,7 @@ public class BinaryExpression implements AccessibleExpression {
 	@Override
 	public Type getType() {
 		Type _left = this.left.getType();
+		System.out.println(left.getClass());
 		Type _right = this.right.getType();
 		Type resultType = _left.merge(_right);
 		if (resultType.equals(AtomicType.ErrorType)) {

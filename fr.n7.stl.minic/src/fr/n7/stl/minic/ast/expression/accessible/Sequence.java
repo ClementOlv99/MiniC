@@ -3,10 +3,6 @@
  */
 package fr.n7.stl.minic.ast.expression.accessible;
 
-import java.util.Iterator;
-import java.util.List;
-
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
@@ -14,6 +10,8 @@ import fr.n7.stl.minic.ast.type.SequenceType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Abstract Syntax Tree node for an expression building a sequence of values.
@@ -93,7 +91,11 @@ public class Sequence implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in Sequence.");
+		Fragment fragment = _factory.createFragment();
+		for(AccessibleExpression v : this.values){
+			fragment.append(v.getCode(_factory));
+		}
+		return fragment;
 	}
 
 }

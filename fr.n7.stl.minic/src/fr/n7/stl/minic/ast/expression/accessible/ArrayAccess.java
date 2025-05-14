@@ -3,9 +3,7 @@
  */
 package fr.n7.stl.minic.ast.expression.accessible;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.AbstractArray;
-import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
 
@@ -30,7 +28,12 @@ public class ArrayAccess extends AbstractArray<AccessibleExpression> implements 
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "getCode is undefined in ArrayAccess.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(index.getCode(_factory));
+		fragment.append(array.getCode(_factory));
+		fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Add));
+		fragment.add(_factory.createLoadI(array.getType().length()));
+		return fragment;
 	}
 
 }

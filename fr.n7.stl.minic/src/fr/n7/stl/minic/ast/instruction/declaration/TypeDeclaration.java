@@ -8,6 +8,7 @@ import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a type declaration.
@@ -49,7 +50,13 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in TypeDeclaration.");
+		if(_scope.accepts(this)) {
+			_scope.register(this);
+			return true;
+		} else {
+			Logger.warning("Type" + this.name + "Is already defined");
+			return false;
+		}
 	}
 	
 	@Override
@@ -63,7 +70,7 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in TypeDeclaration.");
+		return type.completeResolve(_scope);
 	}
 
 	/**

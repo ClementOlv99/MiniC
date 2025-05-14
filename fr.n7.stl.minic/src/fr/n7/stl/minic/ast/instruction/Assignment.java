@@ -3,12 +3,12 @@
  */
 package fr.n7.stl.minic.ast.instruction;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.ArrayType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -72,7 +72,7 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in Assignment.");
+		return assignable.getType();
 	}
 
 	/* (non-Javadoc)
@@ -80,7 +80,17 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean checkType() {
-		return assignable.getType().equalsTo(value.getType());
+		System.out.println(this.toString());
+		Type typeOfValue = assignable.getType();
+		if(typeOfValue instanceof ArrayType){
+			ArrayType type2 = (ArrayType)typeOfValue;
+			typeOfValue = type2.getType();
+		}
+		if(typeOfValue.compatibleWith(value.getType())){
+			return true;
+		}else{
+			throw new RuntimeException("Erreur de typage dans l'assignation" + this.toString());
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -98,6 +108,7 @@ public class Assignment implements Instruction, Expression {
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
 		fragment.append(value.getCode(_factory));
+		fragment.addComment(this.toString());
 		fragment.append(assignable.getCode(_factory));
 		return fragment;
 	}

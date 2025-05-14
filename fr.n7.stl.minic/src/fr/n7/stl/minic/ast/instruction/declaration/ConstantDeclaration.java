@@ -12,6 +12,7 @@ import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a constant declaration instruction.
@@ -83,7 +84,13 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in ConstantDeclaration.");
+		if(_scope.accepts(this)) {
+			_scope.register(this);
+			return this.value.collectAndPartialResolve(_scope);
+		} else {
+			Logger.warning("Constant" + this.name + "Is already defined");
+			return false;
+		}
 	}
 	
 	@Override
@@ -97,7 +104,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics completeResolve is undefined in ConstantDeclaration.");
+		return this.value.completeResolve(_scope) && this.type.completeResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -105,7 +112,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in ConstantDeclaration.");
+		return type.equalsTo(value.getType());
 	}
 
 	/* (non-Javadoc)
@@ -113,7 +120,7 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in ConstantDeclaration.");
+		return 0;
 	}
 
 	/* (non-Javadoc)
@@ -121,7 +128,9 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in ConstantDeclaration.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(value.getCode(_factory));
+		return fragment;
 	}
 
 }

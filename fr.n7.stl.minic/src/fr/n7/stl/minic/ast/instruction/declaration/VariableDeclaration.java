@@ -9,6 +9,8 @@ import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.ArrayType;
+import fr.n7.stl.minic.ast.type.NamedType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -126,7 +128,7 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		return this.value.completeResolve(_scope);
+		return (this.value.completeResolve(_scope) && this.type.completeResolve(_scope));
 
 	}
 
@@ -135,7 +137,8 @@ public class VariableDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean checkType() {
-		return type.equalsTo(value.getType());
+		Type typeOfValue = namedFilter(this.type);
+		return value.getType().compatibleWith(typeOfValue);
 	}
 
 	/* (non-Javadoc)
@@ -154,10 +157,21 @@ public class VariableDeclaration implements Declaration, Instruction {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		fragment.add(_factory.createPush(type.length()));
+		fragment.add(_factory.createPush(value.getType().length()));
 		fragment.append(value.getCode(_factory));
-		fragment.add(_factory.createStore(register, offset, type.length()));
+		fragment.add(_factory.createStore(register, offset, value.getType().length()));
 		return fragment;
+	}
+
+	private Type namedFilter(Type typeOfValue){
+		if(typeOfValue instanceof NamedType){
+			NamedType type2 = (NamedType)typeOfValue;
+			typeOfValue = type2.getType();
+		} else if(typeOfValue instanceof ArrayType){
+			ArrayType type2 = (ArrayType)typeOfValue;
+			typeOfValue = type2.getType();
+		}
+		return typeOfValue;
 	}
 
 }

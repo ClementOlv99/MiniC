@@ -1,7 +1,4 @@
 monProgramme {
-    int j = 0;
-    if (j == 0) {
-        j=1;
-    }
-    print j;
+   boolean i = true;
+   int g = (int) i;
 }

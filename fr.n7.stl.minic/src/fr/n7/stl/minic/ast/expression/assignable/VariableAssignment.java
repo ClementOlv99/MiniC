@@ -3,11 +3,12 @@
  */
 package fr.n7.stl.minic.ast.expression.assignable;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.AbstractIdentifier;
+import fr.n7.stl.minic.ast.expression.accessible.BinaryOperator;
 import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.ArrayType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -63,7 +64,6 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	 */
 	@Override
 	public Type getType() {
-
 		return declaration.getType();
 	}
 
@@ -73,7 +73,15 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		fragment.append(declaration.getCode(_factory));
+		if(declaration.getType() instanceof  ArrayType){
+			fragment.add(_factory.createLoadL(declaration.getType().length()));
+			fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Multiply));
+			fragment.add(_factory.createLoad(declaration.getRegister(), declaration.getOffset(), declaration.getType().length()));
+			fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Add));
+			fragment.add(_factory.createStoreI(declaration.getType().length()));
+		} else {
+			fragment.add(_factory.createStore(declaration.getRegister(), declaration.getOffset(), declaration.getType().length()));
+		}
 		return fragment;
 	}
 

@@ -7,10 +7,10 @@ import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
-
 import java.util.List;
 
 /**
@@ -29,6 +29,7 @@ public class Block {
 	 * Sequence of instructions contained in a block.
 	 */
 	protected List<Instruction> instructions;
+	protected HierarchicalScope<Declaration> localScope;
 
 	/**
 	 * Constructor for a block.
@@ -59,9 +60,11 @@ public class Block {
 	 */
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		boolean ok = true;
+		this.localScope = new SymbolTable(_scope);
 		for (Instruction i : this.instructions) {
-			ok = ok && i.collectAndPartialResolve(_scope);
+			ok = ok && i.collectAndPartialResolve(this.localScope);
 		}
+
 		return ok;
 	}
 	
@@ -89,7 +92,7 @@ public class Block {
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		boolean ok = true;
 		for (Instruction i : this.instructions) {
-			ok = ok && i.completeResolve(_scope);
+			ok = ok && i.completeResolve(this.localScope);
 		}
 		return ok;
 	}
@@ -101,6 +104,9 @@ public class Block {
 	public boolean checkType() {
 		boolean ok = true;
 		for (Instruction i : this.instructions) {
+			if(!i.checkType()){
+				System.out.println("Erreur de type dans l'instruction" + i.toString());
+			}
 			ok = ok && i.checkType();
 		}
 		return ok;

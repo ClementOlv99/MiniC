@@ -3,9 +3,6 @@
  */
 package fr.n7.stl.minic.ast.expression;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
-import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
-import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
@@ -52,7 +49,7 @@ public abstract class AbstractConversion<TargetType> implements Expression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException("Semantics getType undefined in TypeConversion.");
+		return type;
 	}
 	
 	/* (non-Javadoc)
@@ -60,7 +57,12 @@ public abstract class AbstractConversion<TargetType> implements Expression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException("Semantics collect undefined in TypeConversion.");
+		if(target instanceof Expression){
+			Expression expr = (Expression)target;
+			return expr.collectAndPartialResolve(_scope);
+		} else {
+			throw new RuntimeException("C'était pas une expression en faîtes : " + this.toString());
+		}
 	}
 
 	/* (non-Javadoc)
@@ -68,7 +70,13 @@ public abstract class AbstractConversion<TargetType> implements Expression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException("Semantics resolve undefined in TypeConversion.");
+		Expression expr = (Expression)target;
+		if (this.type == null) {
+			return _scope.knows(name) && expr.completeResolve(_scope);
+		} else {
+			return type.completeResolve(_scope) && expr.completeResolve(_scope);
+		}
+		
 	}
 
 	/* (non-Javadoc)
@@ -76,7 +84,10 @@ public abstract class AbstractConversion<TargetType> implements Expression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in TypeConversion.");
+		Fragment fragment = _factory.createFragment();
+		Expression expr = (Expression)target;
+		fragment.append(expr.getCode(_factory));
+		return fragment;
 	}
 
 }

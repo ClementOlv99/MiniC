@@ -3,10 +3,10 @@
  */
 package fr.n7.stl.minic.ast.expression;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.CoupleType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -43,7 +43,8 @@ public class Second implements AccessibleExpression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException("Semantics getType undefined in Second.");
+		CoupleType coupleType = (CoupleType)target.getType();
+		return coupleType.getSecond();
 	}
 	
 	/* (non-Javadoc)
@@ -51,7 +52,7 @@ public class Second implements AccessibleExpression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException("Semantics collect undefined in Second.");
+		return target.collectAndPartialResolve(_scope);
 
 	}
 
@@ -60,7 +61,7 @@ public class Second implements AccessibleExpression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException("Semantics resolve undefined in Second.");
+		return target.completeResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -68,7 +69,10 @@ public class Second implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in Second.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(target.getCode(_factory));
+		fragment.add(_factory.createPop(1, target.getType().length()));
+		return fragment;
 	}
 
 }

@@ -3,14 +3,15 @@
  */
 package fr.n7.stl.minic.ast.expression.allocation;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
+import fr.n7.stl.minic.ast.expression.accessible.BinaryOperator;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.TAMFactory;
 
 /**
@@ -40,7 +41,7 @@ public class ArrayAllocation implements AccessibleExpression, AssignableExpressi
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in ArrayAllocation.");
+		return size.collectAndPartialResolve(_scope);
 	}
 	
 	/* (non-Javadoc)
@@ -48,7 +49,7 @@ public class ArrayAllocation implements AccessibleExpression, AssignableExpressi
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in ArrayAllocation.");
+		return size.completeResolve(_scope) && element.completeResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -56,7 +57,7 @@ public class ArrayAllocation implements AccessibleExpression, AssignableExpressi
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in ArrayAllocation.");
+		return element;
 	}
 
 	/* (non-Javadoc)
@@ -64,7 +65,12 @@ public class ArrayAllocation implements AccessibleExpression, AssignableExpressi
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in ArrayAllocation.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(size.getCode(_factory));
+		fragment.add(_factory.createLoadL(element.length()));
+		fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Multiply));
+		fragment.add(Library.MAlloc);
+		return fragment;
 	}
 
 }
