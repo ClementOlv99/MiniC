@@ -1,0 +1,6 @@
+monProgramme {
+    int* b = new int();
+    *b = 5;
+    print b;
+    print &b;
+}

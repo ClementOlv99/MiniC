@@ -1,0 +1,7 @@
+monProgramme {
+    int j = 0;
+    char c = '0';
+    print c;
+    j = (int) c;
+    print j;
+}

@@ -1,0 +1,7 @@
+monProgramme {
+    int t[] = new int[5];
+    t[3] = 8;
+    print t[2];
+    print t[3];
+    print t[6];
+}

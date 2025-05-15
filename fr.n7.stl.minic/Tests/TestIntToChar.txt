@@ -1,0 +1,6 @@
+monProgramme {
+    int j = 3;
+    char c = '5';
+    print c;
+    c = (char) j;
+}
