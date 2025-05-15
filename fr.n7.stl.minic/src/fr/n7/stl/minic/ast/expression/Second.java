@@ -71,7 +71,9 @@ public class Second implements AccessibleExpression {
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
 		fragment.append(target.getCode(_factory));
-		fragment.add(_factory.createPop(1, target.getType().length()));
+		if(target instanceof CoupleType ct){
+			fragment.add(_factory.createPop(ct.getFirst().length(), ct.getSecond().length()));
+		}
 		return fragment;
 	}
 

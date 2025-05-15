@@ -7,6 +7,7 @@ import fr.n7.stl.minic.ast.expression.AbstractAccess;
 import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
 
 /**
@@ -37,7 +38,7 @@ public class ParameterAccess extends AbstractAccess {
 	 */
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		fragment.add(_factory.createLoad());
+		fragment.add(_factory.createLoad(Register.SB,declaration.getOffset(),declaration.getType().length()));
 		return fragment;
 	}
 
