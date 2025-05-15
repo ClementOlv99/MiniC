@@ -1,6 +1,9 @@
 monProgramme {
    int prog(int i){
-      int a = i;
+      int a = i+1;
+      if(a==3){
+         a = prog(a);
+      }
       return a;
    }
    int b = prog(2);

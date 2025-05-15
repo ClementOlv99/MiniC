@@ -6,7 +6,6 @@ package fr.n7.stl.minic.ast.expression;
 import java.util.Iterator;
 import java.util.List;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
@@ -14,6 +13,7 @@ import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
 import fr.n7.stl.util.Logger;
 
@@ -108,7 +108,15 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionCall.");
+		Fragment fragment = _factory.createFragment();
+		int paramsSize = 0;
+		for(AccessibleExpression ae : arguments){
+			fragment.append(ae.getCode(_factory));
+			fragment.add(_factory.createStore(Register.LB, paramsSize, ae.getType().length()));
+			paramsSize += ae.getType().length();
+		}	
+		fragment.add(_factory.createCall("FUNC"+function.getName(), Register.LB));
+		return fragment;
 	}
 
 }

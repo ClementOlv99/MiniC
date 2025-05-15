@@ -5,7 +5,9 @@ package fr.n7.stl.minic.ast.expression.accessible;
 
 import fr.n7.stl.minic.ast.expression.AbstractAccess;
 import fr.n7.stl.minic.ast.expression.AbstractIdentifier;
+import fr.n7.stl.minic.ast.expression.FunctionCall;
 import fr.n7.stl.minic.ast.instruction.declaration.ConstantDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
@@ -58,7 +60,7 @@ public class IdentifierAccess extends AbstractIdentifier implements AccessibleEx
 					this.expression = new ConstantAccess((ConstantDeclaration) _declaration);
 				} else if(_declaration instanceof ParameterDeclaration par){
 					this.expression = new ParameterAccess(par);
-				}
+				} 
 			}
 		}
 		return true;

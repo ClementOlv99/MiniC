@@ -155,6 +155,6 @@ public class BinaryExpression implements AccessibleExpression {
 		 */
 		_result.add(TAMFactory.createBinaryOperator(this.operator));
 		return _result;
-	}
+	} 
 
 }

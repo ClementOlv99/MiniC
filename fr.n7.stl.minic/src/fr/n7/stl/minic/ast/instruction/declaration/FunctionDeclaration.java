@@ -106,14 +106,14 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {	
 		boolean ok = true;
-		if(_scope .accepts(this)) {
+		if(_scope.accepts(this)) {
 			_scope.register(this);
 			ok = ok && true;
 		} else {
 			Logger.warning("Variable" + this.name + "Is already defined");
 			return false;
 		}	
-		this.localScope = new SymbolTable();
+		this.localScope = new SymbolTable(_scope);
 		for(ParameterDeclaration p : parameters){
 			if(this.localScope .accepts(p)) {
 				this.localScope .register(p);
@@ -123,27 +123,20 @@ public class FunctionDeclaration implements Instruction, Declaration {
 				ok = ok && false;
 			}
 		}
-		if(this.localScope .accepts(this)) {
-			this.localScope .register(this);
-			System.out.println(body.getClass());
-			return ok && this.body.collectAndPartialResolve(this.localScope ,this);
-		} else {
-			Logger.warning("Variable" + this.name + "Is already defined");
-			return false;
-		}
+		return ok && this.body.collectAndPartialResolve(localScope,this);
 	}
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
 		boolean ok = true;
-		if(_scope .accepts(this)) {
+		if(_scope.accepts(this)) {
 			_scope.register(this);
 			ok = ok && true;
 		} else {
 			Logger.warning("Variable" + this.name + "Is already defined");
 			return false;
 		}	
-		this.localScope = new SymbolTable();
+		this.localScope = new SymbolTable(_scope);
 		for(ParameterDeclaration p : parameters){
 			if(this.localScope .accepts(p)) {
 				this.localScope .register(p);
@@ -153,14 +146,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 				ok = ok && false;
 			}
 		}
-		if(this.localScope .accepts(this)) {
-			this.localScope .register(this);
-			System.out.println(body.getClass());
-			return ok && this.body.collectAndPartialResolve(this.localScope ,this);
-		} else {
-			Logger.warning("Variable" + this.name + "Is already defined");
-			return false;
-		}
+		return ok && this.body.collectAndPartialResolve(localScope,this);
 
 	}
 	
@@ -190,7 +176,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 			p.offset =  _offset+ paramSizes;
 			paramSizes = paramSizes + p.getType().length();
 		}
-		body.allocateMemory(_register, _offset+ paramSizes);
+		body.allocateMemory(Register.LB, _offset+ paramSizes);
 		return 0;
 	}
 

@@ -9,8 +9,10 @@ import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
 
@@ -57,6 +59,7 @@ public class Return implements Instruction {
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
 		if (this.function == null) {
+			System.out.println("truc");
 			this.function = _container;		
 		} else {
 			throw new InvalidParameterException("Trying to set a function declaration to a return instruction when one has already been set.");
@@ -85,7 +88,14 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException("Semantics getCode undefined in Return.");
+		Fragment fragment = _factory.createFragment();
+		int paramSize = 0;
+		for(ParameterDeclaration p : function.getParameters()){
+			paramSize = paramSize + p.getType().length();
+		}
+		fragment.append(value.getCode(_factory));
+		fragment.add(_factory.createReturn(value.getType().length(),paramSize));
+		return fragment;
 	}
 
 }
