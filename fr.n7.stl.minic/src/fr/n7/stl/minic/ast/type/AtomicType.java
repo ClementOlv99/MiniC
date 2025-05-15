@@ -72,8 +72,8 @@ public enum AtomicType implements Type {
 			case BooleanType :
 			case CharacterType :
 			case FloatingType :
-			case IntegerType :
-			case StringType : return 1;
+			case IntegerType : return 1;
+			case StringType : return 2;
 			case VoidType : return 0;
 			default : throw new IllegalArgumentException( "Must not call length on the Error type.");
 		}

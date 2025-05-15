@@ -23,7 +23,6 @@ public abstract class AbstractAccess {
 	 * @return Synthesized Type of the expression.
 	 */
 	public Type getType() {
-		System.out.println(this.getDeclaration().getClass());
 		return this.getDeclaration().getType();
 	}
 	

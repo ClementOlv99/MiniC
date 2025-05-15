@@ -3,7 +3,6 @@
  */
 package fr.n7.stl.minic.ast.expression.accessible;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
@@ -34,7 +33,7 @@ public class AddressAccess implements AccessibleExpression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "collect is undefined in AddressAccess.");	
+		return assignable.collectAndPartialResolve(_scope);
 	}
 
 	/* (non-Javadoc)
@@ -42,7 +41,7 @@ public class AddressAccess implements AccessibleExpression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "resolve is undefined in AddressAccess.");	
+		return assignable.completeResolve(_scope);	
 	}
 	
 	/* (non-Javadoc)
@@ -50,7 +49,7 @@ public class AddressAccess implements AccessibleExpression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "getType is undefined in AddressAccess.");
+		return assignable.getType();
 	}
 	
 	/* (non-Javadoc)
@@ -58,7 +57,11 @@ public class AddressAccess implements AccessibleExpression {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "getCode is undefined in AddressAccess.");
+		Fragment fragment = _factory.createFragment();
+		fragment.append(assignable.getCode(_factory));
+		fragment.add(_factory.createLoadI(assignable.getType().length()));
+		fragment.addComment(this.toString());
+		return fragment;
 	}
 
 }

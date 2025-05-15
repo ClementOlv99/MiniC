@@ -3,9 +3,11 @@
  */
 package fr.n7.stl.minic.ast.type;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
+import java.util.Iterator;
+
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a pointer type.
@@ -29,7 +31,11 @@ public class PointerType implements Type {
 	 */
 	@Override
 	public boolean equalsTo(Type _other) {
-		throw new SemanticsUndefinedException("Semantics equalsTo undefined in PointerType.");
+		if(_other instanceof PointerType ptr){
+			return this.element.equalsTo(ptr.getPointedType());
+		} else {
+			return this.element.equalsTo(_other);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -37,7 +43,11 @@ public class PointerType implements Type {
 	 */
 	@Override
 	public boolean compatibleWith(Type _other) {
-		throw new SemanticsUndefinedException("Semantics compatibleWith undefined in PointerType.");
+		if (_other instanceof NamedType) {
+			return this.compatibleWith(((NamedType) _other).getType());
+		} else {
+			return this.element.compatibleWith(_other);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -45,7 +55,12 @@ public class PointerType implements Type {
 	 */
 	@Override
 	public Type merge(Type _other) {
-		throw new SemanticsUndefinedException("Semantics merge undefined in PointerType.");
+		if(_other instanceof PointerType ptr){
+			return new PointerType(this.element.merge(ptr.getPointedType()));
+		} else {
+			Logger.error("Type non respecté pour un merge de pointeur");
+			return AtomicType.NullType;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -53,7 +68,7 @@ public class PointerType implements Type {
 	 */
 	@Override
 	public int length() {
-		throw new SemanticsUndefinedException("Semantics length undefined in PointerType.");
+		return 1;
 	}
 
 	/* (non-Javadoc)

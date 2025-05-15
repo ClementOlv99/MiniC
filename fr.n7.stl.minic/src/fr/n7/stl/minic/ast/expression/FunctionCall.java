@@ -9,11 +9,13 @@ import java.util.List;
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.accessible.AccessibleExpression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a function call expression.
@@ -70,7 +72,19 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in FunctionCall.");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			Declaration _declaration = _scope.get(this.name);
+			if (_declaration instanceof FunctionDeclaration func) {
+				this.function = func;
+				return true;
+			} else {
+				Logger.error("The declaration for " + this.name + " is of the wrong kind.");
+				return false;
+			}
+		} else {
+			Logger.error("The identifier " + this.name + " has not been found.");
+			return false;	
+		}
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +92,7 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionCall.");
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -86,7 +100,7 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public Type getType() {
-		throw new SemanticsUndefinedException( "Semantics getType is undefined in FunctionCall.");
+		return function.getType();
 	}
 
 	/* (non-Javadoc)

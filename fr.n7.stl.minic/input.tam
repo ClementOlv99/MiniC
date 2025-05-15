@@ -1,9 +1,0 @@
-PUSH 1
-LOADL 1
-STORE (1) 0[SB]
-PUSH 1
-;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@7382f612
-LOAD (1) 0[SB]
-STORE (1) 1[SB]
-HALT
-

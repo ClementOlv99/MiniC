@@ -57,8 +57,7 @@ public abstract class AbstractConversion<TargetType> implements Expression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		if(target instanceof Expression){
-			Expression expr = (Expression)target;
+		if(target instanceof Expression expr){
 			return expr.collectAndPartialResolve(_scope);
 		} else {
 			throw new RuntimeException("C'était pas une expression en faîtes : " + this.toString());

@@ -11,6 +11,7 @@ import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.ArrayType;
 import fr.n7.stl.minic.ast.type.NamedType;
+import fr.n7.stl.minic.ast.type.PointerType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -119,8 +120,13 @@ public class VariableDeclaration implements Declaration, Instruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in ConstantDeclaration.");
-
+		if(_scope.accepts(this)) {
+			_scope.register(this);
+			return this.value.collectAndPartialResolve(_scope);
+		} else {
+			Logger.warning("Variable" + this.name + "Is already defined");
+			return false;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -160,6 +166,7 @@ public class VariableDeclaration implements Declaration, Instruction {
 		fragment.add(_factory.createPush(value.getType().length()));
 		fragment.append(value.getCode(_factory));
 		fragment.add(_factory.createStore(register, offset, value.getType().length()));
+		fragment.addComment(this.toString());
 		return fragment;
 	}
 
@@ -170,6 +177,10 @@ public class VariableDeclaration implements Declaration, Instruction {
 		} else if(typeOfValue instanceof ArrayType){
 			ArrayType type2 = (ArrayType)typeOfValue;
 			typeOfValue = type2.getType();
+		}
+		else if(typeOfValue instanceof PointerType){
+			PointerType type2 = (PointerType)typeOfValue;
+			typeOfValue = type2.getPointedType();
 		}
 		return typeOfValue;
 	}

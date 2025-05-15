@@ -3,12 +3,16 @@
  */
 package fr.n7.stl.minic.ast.instruction;
 
+import fr.n7.stl.util.Logger;
+
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.expression.assignable.AssignableExpression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.ArrayType;
+import fr.n7.stl.minic.ast.type.AtomicType;
+import fr.n7.stl.minic.ast.type.PointerType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
@@ -80,16 +84,29 @@ public class Assignment implements Instruction, Expression {
 	 */
 	@Override
 	public boolean checkType() {
-		System.out.println(this.toString());
 		Type typeOfValue = assignable.getType();
-		if(typeOfValue instanceof ArrayType){
-			ArrayType type2 = (ArrayType)typeOfValue;
-			typeOfValue = type2.getType();
-		}
-		if(typeOfValue.compatibleWith(value.getType())){
+		if(typeOfValue instanceof ArrayType arr){
+			typeOfValue = arr.getType();
+			if(typeOfValue.equalsTo(value.getType())){
+				return true;
+			} else {
+				Logger.error("Erreur de typage dans l'assignation du tableau :" + this.toString());
+				return false;
+			}
+		} else if(typeOfValue instanceof PointerType ptr){
+			typeOfValue = ptr.getPointedType();
+			if(typeOfValue.equalsTo(value.getType())){
+				return true;
+			} else {
+				Logger.error("Erreur de typage dans l'assignation du pointeur :" + this.toString());
+				return false;
+			}
+		} 
+		if(value.getType().compatibleWith(typeOfValue)){
 			return true;
 		}else{
-			throw new RuntimeException("Erreur de typage dans l'assignation" + this.toString());
+			Logger.error("Erreur de typage dans l'assignation :" + this.toString());
+			return false;
 		}
 	}
 	

@@ -9,6 +9,7 @@ import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.ArrayType;
+import fr.n7.stl.minic.ast.type.PointerType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -73,13 +74,16 @@ public class VariableAssignment extends AbstractIdentifier implements Assignable
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		if(declaration.getType() instanceof  ArrayType){
-			fragment.add(_factory.createLoadL(declaration.getType().length()));
+		if(declaration.getType() instanceof  ArrayType arr){
+			fragment.add(_factory.createLoadL(arr.length()));
 			fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Multiply));
-			fragment.add(_factory.createLoad(declaration.getRegister(), declaration.getOffset(), declaration.getType().length()));
+			fragment.add(_factory.createLoad(declaration.getRegister(), declaration.getOffset(), arr.length()));
 			fragment.add(TAMFactory.createBinaryOperator(BinaryOperator.Add));
-			fragment.add(_factory.createStoreI(declaration.getType().length()));
-		} else {
+			fragment.add(_factory.createStoreI(arr.length()));
+		}else if (declaration.getType() instanceof  PointerType ptr){
+			fragment.add(_factory.createLoad(declaration.getRegister(), declaration.getOffset(), ptr.length()));
+			fragment.addComment(this.toString());
+		}else {
 			fragment.add(_factory.createStore(declaration.getRegister(), declaration.getOffset(), declaration.getType().length()));
 		}
 		return fragment;

@@ -5,12 +5,15 @@ package fr.n7.stl.minic.ast;
 
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.ParameterDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
+
 import java.util.List;
 
 /**
@@ -79,7 +82,13 @@ public class Block {
 	 * allowed.
 	 */
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics collect is undefined in Iteration.");
+		boolean ok = true;
+		this.localScope = new SymbolTable(_scope);
+		for (Instruction i : this.instructions) {
+			ok = ok && i.collectAndPartialResolve(this.localScope,_container);
+		}
+
+		return ok;
 	}
 	
 	/**
@@ -106,6 +115,7 @@ public class Block {
 		for (Instruction i : this.instructions) {
 			if(!i.checkType()){
 				System.out.println("Erreur de type dans l'instruction" + i.toString());
+				System.out.println(i.getClass());
 			}
 			ok = ok && i.checkType();
 		}
@@ -135,6 +145,7 @@ public class Block {
 		Fragment fragment = _factory.createFragment();
 		for (Instruction i : this.instructions) {
 			fragment.append(i.getCode(_factory));
+			//fragment.addComment(i.toString());
 		}
 		return fragment;
 	}

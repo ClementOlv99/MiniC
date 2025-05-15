@@ -6,15 +6,19 @@ package fr.n7.stl.minic.ast.instruction.declaration;
 import java.util.Iterator;
 import java.util.List;
 
+import org.antlr.v4.parse.ANTLRParser.blockEntry_return;
+
 import fr.n7.stl.minic.ast.Block;
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.scope.SymbolTable;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
+import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Abstract Syntax Tree node for a function declaration.
@@ -36,6 +40,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 * List of AST nodes for the formal parameters of the function
 	 */
 	protected List<ParameterDeclaration> parameters;
+	protected HierarchicalScope<Declaration> localScope;
 	
 	/**
 	 * @return the parameters
@@ -99,13 +104,63 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 * @see fr.n7.stl.block.ast.instruction.Instruction#collect(fr.n7.stl.block.ast.scope.Scope)
 	 */
 	@Override
-	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in FunctionDeclaration.");
+	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {	
+		boolean ok = true;
+		if(_scope .accepts(this)) {
+			_scope.register(this);
+			ok = ok && true;
+		} else {
+			Logger.warning("Variable" + this.name + "Is already defined");
+			return false;
+		}	
+		this.localScope = new SymbolTable();
+		for(ParameterDeclaration p : parameters){
+			if(this.localScope .accepts(p)) {
+				this.localScope .register(p);
+				ok = ok && true;
+			} else {
+				Logger.warning("Parameter " + p.getName() + "Is already defined");
+				ok = ok && false;
+			}
+		}
+		if(this.localScope .accepts(this)) {
+			this.localScope .register(this);
+			System.out.println(body.getClass());
+			return ok && this.body.collectAndPartialResolve(this.localScope ,this);
+		} else {
+			Logger.warning("Variable" + this.name + "Is already defined");
+			return false;
+		}
 	}
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in ConstantDeclaration.");
+		boolean ok = true;
+		if(_scope .accepts(this)) {
+			_scope.register(this);
+			ok = ok && true;
+		} else {
+			Logger.warning("Variable" + this.name + "Is already defined");
+			return false;
+		}	
+		this.localScope = new SymbolTable();
+		for(ParameterDeclaration p : parameters){
+			if(this.localScope .accepts(p)) {
+				this.localScope .register(p);
+				ok = ok && true;
+			} else {
+				Logger.warning("Parameter " + p.getName() + "Is already defined");
+				ok = ok && false;
+			}
+		}
+		if(this.localScope .accepts(this)) {
+			this.localScope .register(this);
+			System.out.println(body.getClass());
+			return ok && this.body.collectAndPartialResolve(this.localScope ,this);
+		} else {
+			Logger.warning("Variable" + this.name + "Is already defined");
+			return false;
+		}
 
 	}
 	
@@ -114,7 +169,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "Semantics resolve is undefined in FunctionDeclaration.");
+		return (this.body.completeResolve(localScope) && this.type.completeResolve(localScope));
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +177,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public boolean checkType() {
-		throw new SemanticsUndefinedException( "Semantics checkType is undefined in FunctionDeclaration.");
+		return body.checkType();
 	}
 
 	/* (non-Javadoc)
@@ -130,7 +185,13 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public int allocateMemory(Register _register, int _offset) {
-		throw new SemanticsUndefinedException( "Semantics allocateMemory is undefined in FunctionDeclaration.");
+		int paramSizes = 0;
+		for(ParameterDeclaration p : parameters){
+			p.offset =  _offset+ paramSizes;
+			paramSizes = paramSizes + p.getType().length();
+		}
+		body.allocateMemory(_register, _offset+ paramSizes);
+		return 0;
 	}
 
 	/* (non-Javadoc)
@@ -138,7 +199,12 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	 */
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
-		throw new SemanticsUndefinedException( "Semantics getCode is undefined in FunctionDeclaration.");
+		Fragment fragment = _factory.createFragment();
+		fragment.add(_factory.createJump("SKIPFUNC"+this.name));
+		fragment.addSuffix("FUNC"+this.name);
+		fragment.append(body.getCode(_factory));
+		fragment.addSuffix("SKIPFUNC"+this.name);
+		return fragment;
 	}
 
 }

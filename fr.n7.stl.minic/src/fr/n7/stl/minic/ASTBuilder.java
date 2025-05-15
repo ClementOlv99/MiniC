@@ -50,7 +50,7 @@ public class ASTBuilder extends MiniCParserBaseListener {
                 if (this.mainBlock.checkType()) {
                     System.out.println("Type verification succeeded.");
 
-                    System.out.println("Cod    | Si ParentheseOuvrante expression ParentheseFermante alors=bloc #instructionSiSansSinone generation ...");
+                    System.out.println("Code generation ...");
                     this.mainBlock.allocateMemory(Register.SB, 0);
                     try {
                         PrintWriter writer = new PrintWriter(output_path);

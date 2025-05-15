@@ -1,10 +1,14 @@
 package fr.n7.stl.minic.ast.expression;
 
 import fr.n7.stl.minic.ast.SemanticsUndefinedException;
+import fr.n7.stl.minic.ast.instruction.declaration.TypeDeclaration;
+import fr.n7.stl.minic.ast.instruction.declaration.VariableDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.NamedType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.minic.ast.type.declaration.FieldDeclaration;
+import fr.n7.stl.util.Logger;
 
 /**
  * Common elements between left (Assignable) and right (Expression) end sides of assignments. These elements
@@ -41,7 +45,20 @@ public abstract class AbstractField<RecordKind extends Expression> implements Ex
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "collect is undefined in AbstractField.");
+		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+			Declaration _declaration = _scope.get(this.name);
+			System.out.println(_declaration.toString());
+			if (_declaration instanceof TypeDeclaration) {
+				return true;
+			} else {
+				Logger.error("The declaration for " + this.name + " is of the wrong kind.");
+				return false;
+			}
+		} else {
+			Logger.error("The identifier " + this.name + " has not been found.");
+			return false;	
+		}
+
 	}
 
 	/* (non-Javadoc)
@@ -49,7 +66,7 @@ public abstract class AbstractField<RecordKind extends Expression> implements Ex
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		throw new SemanticsUndefinedException( "resolve is undefined in AbstractField.");
+		return record.completeResolve(_scope);
 	}
 
 	/**

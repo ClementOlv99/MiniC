@@ -1,4 +1,8 @@
 monProgramme {
-   int c = 1;
-   int *b = new int();
+   int prog(int i){
+      int a = i;
+      return a;
+   }
+   int b = prog(2);
+   print b;
 }

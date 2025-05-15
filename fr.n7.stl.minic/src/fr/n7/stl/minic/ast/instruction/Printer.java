@@ -64,7 +64,7 @@ public class Printer implements Instruction {
 	@Override
 	public boolean checkType() {
 		Type type = Filter(parameter.getType());
-		return (type.compatibleWith((AtomicType.BooleanType))||type.compatibleWith((AtomicType.CharacterType))||type.compatibleWith((AtomicType.IntegerType)));
+		return (type.compatibleWith((AtomicType.BooleanType))||type.compatibleWith((AtomicType.CharacterType))||type.compatibleWith((AtomicType.IntegerType)))||type.compatibleWith((AtomicType.StringType));
 	}
 
 	/* (non-Javadoc)
@@ -86,9 +86,13 @@ public class Printer implements Instruction {
 		fragment.addComment(this.toString());
 		if (type.compatibleWith((AtomicType.BooleanType))) {
 			fragment.add(Library.BOut);
-		} else if (type.compatibleWith((AtomicType.CharacterType))) {
+		} else if (type.compatibleWith((AtomicType.StringType))) {
+			for(int i=0;i<type.length();i++){
+				fragment.add(Library.COut);
+			}
+		}else if (type.compatibleWith((AtomicType.CharacterType))) {
 			fragment.add(Library.COut);
-		} else{
+		} else {
 			fragment.add(Library.IOut);
 		}
 		return fragment;
