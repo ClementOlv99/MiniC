@@ -1,0 +1,8 @@
+monProgramme {
+    int j = 2;
+
+    while (j>=2) {
+        print j;
+        j = j + 1;
+    }
+}

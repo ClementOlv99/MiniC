@@ -1,0 +1,3 @@
+monProgramme {
+    <int, int> c = <1,'c'>;
+}

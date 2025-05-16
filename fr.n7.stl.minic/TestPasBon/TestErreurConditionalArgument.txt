@@ -1,0 +1,9 @@
+monProgramme {
+
+    int j = 0;
+
+    if (j == 'clown') {
+        print 1;
+    }
+    
+}

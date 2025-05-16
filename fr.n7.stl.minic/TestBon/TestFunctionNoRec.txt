@@ -1,0 +1,11 @@
+monProgramme {
+    int prog(int i) {
+        if (i < 0) {
+            return -i;
+        }
+
+        return i;
+    }
+    int b = prog(-5);
+    print b;
+}
