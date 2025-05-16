@@ -12,6 +12,7 @@ import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
 import fr.n7.stl.minic.ast.type.ArrayType;
 import fr.n7.stl.minic.ast.type.AtomicType;
+import fr.n7.stl.minic.ast.type.NamedType;
 import fr.n7.stl.minic.ast.type.PointerType;
 import fr.n7.stl.minic.ast.type.Type;
 import fr.n7.stl.tam.ast.Fragment;
@@ -94,6 +95,14 @@ public class Assignment implements Instruction, Expression {
 			}
 		} else if(typeOfValue instanceof PointerType ptr){
 			typeOfValue = ptr.getPointedType();
+			if(typeOfValue.equalsTo(value.getType())){
+				return true;
+			} else {
+				Logger.error("Erreur de typage dans l'assignation du pointeur :" + this.toString());
+				return false;
+			}
+		} else if(typeOfValue instanceof NamedType nt){
+			typeOfValue = nt.getType();
 			if(typeOfValue.equalsTo(value.getType())){
 				return true;
 			} else {

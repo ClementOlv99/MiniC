@@ -102,7 +102,7 @@ public class Printer implements Instruction {
 		if(typeOfValue instanceof NamedType){
 			NamedType type2 = (NamedType)typeOfValue;
 			typeOfValue = type2.getType();
-		}else if(typeOfValue instanceof ArrayType){
+		} else if(typeOfValue instanceof ArrayType){
 			ArrayType type2 = (ArrayType)typeOfValue;
 			typeOfValue = type2.getType();
 		}
