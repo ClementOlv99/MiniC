@@ -193,6 +193,7 @@ public class RecordType implements Type, Declaration, Scope<FieldDeclaration> {
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
 		boolean _result = true;
 		for (FieldDeclaration f : this.fields) {
+			System.out.println(f.getName());
 			_result = _result && f.getType().completeResolve(_scope);
 		}
 		return _result;

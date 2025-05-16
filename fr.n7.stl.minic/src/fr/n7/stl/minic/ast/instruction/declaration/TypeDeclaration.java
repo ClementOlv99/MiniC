@@ -55,8 +55,6 @@ public class TypeDeclaration implements Declaration, Instruction {
 			for (FieldDeclaration field : rcd.getFields()) {
 				if(_scope.accepts(field)) {
 					_scope.register(field);
-					System.out.println("champs :" + field.getName());
-					return true;
 				} else {
 					Logger.warning("Type" + this.name + "Is already defined");
 					return false;
@@ -83,7 +81,10 @@ public class TypeDeclaration implements Declaration, Instruction {
 					Logger.warning("Type" + this.name + "Is already defined");
 					return false;
 				}
-			}			
+			}	
+			if(_scope.accepts(rcd)){
+				_scope.register(rcd);
+			}		
 		} 
 		if(_scope.accepts(this)) {
 			_scope.register(this);

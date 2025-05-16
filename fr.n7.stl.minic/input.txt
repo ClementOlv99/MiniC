@@ -1,11 +1,8 @@
 /* -*-c-mode-*- */
-pgcd {
-  int fact( int n ) {
-    if ( n == 0 ) {
-      return 1;
-    } else {
-      return n * (fact (n - 1));
-    }
-  }
-  print fact( 5 );
+test {
+  typedef struct Pointi { int x; int y; } Point;
+  typedef struct Segmenti { int ext1; int ext2; } Segment;
+  Segment s = {1,2};
+  int x1 = s.ext1;
+  int y2 = s.ext2;
 }
