@@ -135,7 +135,6 @@ public class ConstantDeclaration implements Instruction, Declaration {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		fragment.append(value.getCode(_factory));
 		return fragment;
 	}
 

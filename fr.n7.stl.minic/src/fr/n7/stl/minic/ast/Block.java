@@ -33,6 +33,7 @@ public class Block {
 	 */
 	protected List<Instruction> instructions;
 	protected HierarchicalScope<Declaration> localScope;
+	private int memorySize;
 
 	/**
 	 * Constructor for a block.
@@ -133,6 +134,7 @@ public class Block {
 		for (Instruction i : this.instructions) {
 			taille += i.allocateMemory(_register, taille + _offset);
 		}
+		this.memorySize = taille;
 	}
 
 	/**
@@ -146,6 +148,9 @@ public class Block {
 		for (Instruction i : this.instructions) {
 			fragment.append(i.getCode(_factory));
 			//fragment.addComment(i.toString());
+		}
+		if(memorySize!=0){
+			fragment.add(_factory.createPop(0,this.memorySize));	
 		}
 		return fragment;
 	}

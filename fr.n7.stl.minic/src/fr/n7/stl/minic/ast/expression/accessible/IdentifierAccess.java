@@ -56,7 +56,6 @@ public class IdentifierAccess extends AbstractIdentifier implements AccessibleEx
 			//System.out.println(_declaration.getClass());
 			if (_declaration instanceof VariableDeclaration) {
 				this.expression = new VariableAccess((VariableDeclaration) _declaration);
-				System.out.println("Id : " +name);
 			} else {
 				if (_declaration instanceof ConstantDeclaration) {
 					// TODO : refactor the management of Constants

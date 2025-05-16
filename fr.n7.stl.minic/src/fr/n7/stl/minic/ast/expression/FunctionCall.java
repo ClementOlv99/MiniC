@@ -117,13 +117,10 @@ public class FunctionCall implements AccessibleExpression {
 	@Override
 	public Fragment getCode(TAMFactory _factory) {
 		Fragment fragment = _factory.createFragment();
-		int paramsSize = 0;
 		for(AccessibleExpression ae : arguments){
 			fragment.append(ae.getCode(_factory));
-			fragment.add(_factory.createStore(Register.LB, paramsSize, ae.getType().length()));
-			paramsSize += ae.getType().length();
 		}	
-		fragment.add(_factory.createCall("FUNC"+function.getName(), Register.LB));
+		fragment.add(_factory.createCall("FUNC"+function.getName(), Register.SB));
 		return fragment;
 	}
 
