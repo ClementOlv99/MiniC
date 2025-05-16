@@ -166,7 +166,7 @@ public class VariableDeclaration implements Declaration, Instruction {
 		fragment.add(_factory.createPush(value.getType().length()));
 		fragment.append(value.getCode(_factory));
 		fragment.add(_factory.createStore(register, offset, value.getType().length()));
-		fragment.addComment(this.toString());
+		//fragment.addComment(this.toString());
 		return fragment;
 	}
 

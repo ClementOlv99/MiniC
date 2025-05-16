@@ -115,7 +115,7 @@ public class Block {
 		for (Instruction i : this.instructions) {
 			if(!i.checkType()){
 				System.out.println("Erreur de type dans l'instruction" + i.toString());
-				System.out.println(i.getClass());
+				//System.out.println(i.getClass());
 			}
 			ok = ok && i.checkType();
 		}

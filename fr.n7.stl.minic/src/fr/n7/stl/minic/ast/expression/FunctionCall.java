@@ -72,11 +72,15 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
+		boolean ok = true;
+		for(AccessibleExpression ae : arguments){
+			ok = ok && ae.collectAndPartialResolve(_scope);
+		}	
+		if (_scope.knows(this.name)) {
 			Declaration _declaration = _scope.get(this.name);
 			if (_declaration instanceof FunctionDeclaration func) {
 				this.function = func;
-				return true;
+				return ok && true;
 			} else {
 				Logger.error("The declaration for " + this.name + " is of the wrong kind.");
 				return false;
@@ -92,7 +96,11 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		return true;
+		boolean ok = true;
+		for(AccessibleExpression ae : arguments){
+			ok = ok && ae.completeResolve(_scope);
+		}
+		return ok;	
 	}
 	
 	/* (non-Javadoc)

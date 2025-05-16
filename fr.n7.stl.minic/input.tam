@@ -1,0 +1,87 @@
+PUSH 2
+LOADL 47
+LOADL 53
+STORE (2) 0[SB]
+LOADL 0
+PUSH 1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@490d6c15
+LOAD (2) 0[SB]
+POP (1) 1
+STORE (1) 2[SB]
+PUSH 1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@7d4793a8
+LOAD (2) 0[SB]
+POP (1) 1
+STORE (1) 3[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@449b2d27
+;(a * b)
+;((a * b) != test)
+BEGINWHILE1
+LOAD (1) 2[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@5479e3f
+LOAD (1) 3[SB]
+SUBR IMul
+LOADL 0
+SUBR INeq
+JUMPIF (0) ENDWHILE1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@33e5ccce
+;(a > b)
+LOAD (1) 2[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@5a42bbf4
+LOAD (1) 3[SB]
+SUBR IGtr
+JUMPIF (0) ELSE2
+PUSH 1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@270421f5
+;(a - b)
+LOAD (1) 2[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@52d455b8
+LOAD (1) 3[SB]
+SUBR ISub
+STORE (1) 4[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@4f4a7090
+; a  = na;
+
+LOAD (1) 4[SB]
+STORE (1) 2[SB]
+JUMP END_IF_ELSE2
+ELSE2
+PUSH 1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@18ef96
+;(b - a)
+LOAD (1) 3[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@6956de9
+LOAD (1) 2[SB]
+SUBR ISub
+STORE (1) 4[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@769c9116
+; b  = nb;
+
+LOAD (1) 4[SB]
+STORE (1) 3[SB]
+END_IF_ELSE2
+JUMP BEGINWHILE1
+ENDWHILE1
+PUSH 1
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@6aceb1a5
+LOAD (1) 2[SB]
+STORE (1) 4[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@2d6d8735
+;(res == test)
+LOAD (1) 4[SB]
+LOADL 0
+SUBR IEq
+JUMPIF (0) FIN_IF3
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@ba4d54
+; res  = b;
+
+LOAD (1) 3[SB]
+STORE (1) 4[SB]
+FIN_IF3
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@12bc6874
+;print res;
+
+LOAD (1) 4[SB]
+SUBR IOut
+HALT
+

@@ -15,6 +15,7 @@ import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Library;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
+import fr.n7.stl.util.Logger;
 
 /**
  * Implementation of the Abstract Syntax Tree node for a return instruction.
@@ -45,6 +46,7 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
+		System.out.println("Return collect:" + value.toString());
 		return value.collectAndPartialResolve(_scope);
 	}
 	
@@ -53,13 +55,13 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
+		System.out.println("Return :" + value.toString());
 		return value.completeResolve(_scope);
 	}
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
 		if (this.function == null) {
-			System.out.println("truc");
 			this.function = _container;		
 		} else {
 			throw new InvalidParameterException("Trying to set a function declaration to a return instruction when one has already been set.");

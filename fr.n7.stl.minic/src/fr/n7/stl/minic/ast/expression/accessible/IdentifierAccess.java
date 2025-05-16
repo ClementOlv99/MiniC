@@ -52,15 +52,18 @@ public class IdentifierAccess extends AbstractIdentifier implements AccessibleEx
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
 			Declaration _declaration = _scope.get(this.name);
+			//System.out.println(name);
+			//System.out.println(_declaration.getClass());
 			if (_declaration instanceof VariableDeclaration) {
 				this.expression = new VariableAccess((VariableDeclaration) _declaration);
+				System.out.println("Id : " +name);
 			} else {
 				if (_declaration instanceof ConstantDeclaration) {
 					// TODO : refactor the management of Constants
 					this.expression = new ConstantAccess((ConstantDeclaration) _declaration);
 				} else if(_declaration instanceof ParameterDeclaration par){
 					this.expression = new ParameterAccess(par);
-				} 
+				}
 			}
 		}
 		return true;
