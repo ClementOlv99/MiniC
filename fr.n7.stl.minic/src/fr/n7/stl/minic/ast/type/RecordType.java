@@ -22,6 +22,12 @@ import fr.n7.stl.minic.ast.type.declaration.FieldDeclaration;
 public class RecordType implements Type, Declaration, Scope<FieldDeclaration> {
 
 	private List<FieldDeclaration> fields;
+
+
+	public List<FieldDeclaration> getFields() {
+		return fields;
+	}
+
 	private String name;
 
 	/**

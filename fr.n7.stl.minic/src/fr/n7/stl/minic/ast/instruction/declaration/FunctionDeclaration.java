@@ -188,7 +188,7 @@ public class FunctionDeclaration implements Instruction, Declaration {
 			p.offset =  paramSizes - p.getType().length();
 			paramSizes = paramSizes - p.getType().length();
 		}
-		body.allocateMemory(Register.LB, _offset);
+		body.allocateMemory(Register.LB, _offset+3);
 		return 0;
 	}
 
@@ -203,15 +203,6 @@ public class FunctionDeclaration implements Instruction, Declaration {
 		fragment.append(body.getCode(_factory));
 		fragment.addSuffix("SKIPFUNC"+this.name);
 		return fragment;
-	}
-
-	public HierarchicalScope<Declaration> getLocalScope() {
-		return localScope;
-	}
-
-
-	public Block getBody() {
-		return body;
 	}
 
 }

@@ -1,10 +1,11 @@
 package fr.n7.stl.minic.ast.instruction.declaration;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.instruction.Instruction;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.scope.HierarchicalScope;
+import fr.n7.stl.minic.ast.type.RecordType;
 import fr.n7.stl.minic.ast.type.Type;
+import fr.n7.stl.minic.ast.type.declaration.FieldDeclaration;
 import fr.n7.stl.tam.ast.Fragment;
 import fr.n7.stl.tam.ast.Register;
 import fr.n7.stl.tam.ast.TAMFactory;
@@ -50,6 +51,18 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
+		if(this.type instanceof RecordType rcd){
+			for (FieldDeclaration field : rcd.getFields()) {
+				if(_scope.accepts(field)) {
+					_scope.register(field);
+					System.out.println("champs :" + field.getName());
+					return true;
+				} else {
+					Logger.warning("Type" + this.name + "Is already defined");
+					return false;
+				}
+			}			
+		} 
 		if(_scope.accepts(this)) {
 			_scope.register(this);
 			return true;
@@ -61,7 +74,24 @@ public class TypeDeclaration implements Declaration, Instruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		throw new SemanticsUndefinedException( "Semantics collectAndPartialResolve is undefined in ConstantDeclaration.");
+		if(this.type instanceof RecordType rcd){
+			for (FieldDeclaration field : rcd.getFields()) {
+				if(_scope.accepts(field)) {
+					_scope.register(field);
+					return true;
+				} else {
+					Logger.warning("Type" + this.name + "Is already defined");
+					return false;
+				}
+			}			
+		} 
+		if(_scope.accepts(this)) {
+			_scope.register(this);
+			return true;
+		} else {
+			Logger.warning("Type" + this.name + "Is already defined");
+			return false;
+		}
 
 	}
 

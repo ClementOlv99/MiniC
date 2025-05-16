@@ -5,7 +5,7 @@ package fr.n7.stl.minic.ast.instruction;
 
 import java.security.InvalidParameterException;
 
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
+
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.scope.Declaration;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;

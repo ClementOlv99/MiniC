@@ -47,8 +47,8 @@ public abstract class AbstractField<RecordKind extends Expression> implements Ex
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
 		if (((HierarchicalScope<Declaration>)_scope).knows(this.name)) {
 			Declaration _declaration = _scope.get(this.name);
-			System.out.println(_declaration.toString());
-			if (_declaration instanceof TypeDeclaration) {
+			System.out.println(_declaration.getClass());
+			if (_declaration instanceof FieldDeclaration) {
 				return true;
 			} else {
 				Logger.error("The declaration for " + this.name + " is of the wrong kind.");

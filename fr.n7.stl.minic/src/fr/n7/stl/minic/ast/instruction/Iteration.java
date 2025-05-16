@@ -4,7 +4,6 @@
 package fr.n7.stl.minic.ast.instruction;
 
 import fr.n7.stl.minic.ast.Block;
-import fr.n7.stl.minic.ast.SemanticsUndefinedException;
 import fr.n7.stl.minic.ast.expression.Expression;
 import fr.n7.stl.minic.ast.instruction.declaration.FunctionDeclaration;
 import fr.n7.stl.minic.ast.scope.Declaration;
@@ -47,7 +46,7 @@ public class Iteration implements Instruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		return this.condition.collectAndPartialResolve(_scope) && this.body.collectAndPartialResolve(_scope);
+		return this.condition.collectAndPartialResolve(_scope) && this.body.collectAndPartialResolve(_scope,_container);
 	}
 	
 	/* (non-Javadoc)
