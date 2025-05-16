@@ -46,7 +46,6 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		System.out.println("Return collect:" + value.toString());
 		return value.collectAndPartialResolve(_scope);
 	}
 	
@@ -55,7 +54,6 @@ public class Return implements Instruction {
 	 */
 	@Override
 	public boolean completeResolve(HierarchicalScope<Declaration> _scope) {
-		System.out.println("Return :" + value.toString());
 		return value.completeResolve(_scope);
 	}
 	

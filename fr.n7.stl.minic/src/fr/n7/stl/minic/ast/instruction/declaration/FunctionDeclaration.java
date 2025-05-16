@@ -84,6 +84,18 @@ public class FunctionDeclaration implements Instruction, Declaration {
 		return _result + " )" + this.body;
 	}
 
+	public String toStringSignature() {
+		String _result = this.type + " " + this.name + "( ";
+		Iterator<ParameterDeclaration> _iter = this.parameters.iterator();
+		if (_iter.hasNext()) {
+			_result += _iter.next();
+			while (_iter.hasNext()) {
+				_result += " ," + _iter.next();
+			}
+		}
+		return _result + " )";
+	}
+
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.Declaration#getName()
 	 */
@@ -173,10 +185,10 @@ public class FunctionDeclaration implements Instruction, Declaration {
 	public int allocateMemory(Register _register, int _offset) {
 		int paramSizes = 0;
 		for(ParameterDeclaration p : parameters){
-			p.offset =  _offset+ paramSizes;
-			paramSizes = paramSizes + p.getType().length();
+			p.offset =  paramSizes - p.getType().length();
+			paramSizes = paramSizes - p.getType().length();
 		}
-		body.allocateMemory(Register.LB, _offset+ paramSizes);
+		body.allocateMemory(Register.LB, _offset);
 		return 0;
 	}
 
@@ -191,6 +203,15 @@ public class FunctionDeclaration implements Instruction, Declaration {
 		fragment.append(body.getCode(_factory));
 		fragment.addSuffix("SKIPFUNC"+this.name);
 		return fragment;
+	}
+
+	public HierarchicalScope<Declaration> getLocalScope() {
+		return localScope;
+	}
+
+
+	public Block getBody() {
+		return body;
 	}
 
 }

@@ -56,7 +56,7 @@ public class FunctionCall implements AccessibleExpression {
 	 */
 	@Override
 	public String toString() {
-		String _result = ((this.function == null)?this.name:this.function) + "( ";
+		String _result = ((this.function == null)?this.name:this.function.toStringSignature()) + "( ";
 		Iterator<AccessibleExpression> _iter = this.arguments.iterator();
 		if (_iter.hasNext()) {
 			_result += _iter.next();
@@ -120,7 +120,7 @@ public class FunctionCall implements AccessibleExpression {
 		for(AccessibleExpression ae : arguments){
 			fragment.append(ae.getCode(_factory));
 		}	
-		fragment.add(_factory.createCall("FUNC"+function.getName(), Register.SB));
+		fragment.add(_factory.createCall("FUNC"+function.getName(),Register.LB));
 		return fragment;
 	}
 
