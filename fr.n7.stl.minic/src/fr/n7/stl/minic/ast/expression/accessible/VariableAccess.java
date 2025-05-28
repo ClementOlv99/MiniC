@@ -28,7 +28,7 @@ public class VariableAccess extends AbstractAccess {
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.expression.AbstractUse#getDeclaration()
 	 */
-	public Declaration getDeclaration() {
+	public VariableDeclaration getDeclaration() {
 		return this.declaration;
 	}
 

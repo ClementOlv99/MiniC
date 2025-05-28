@@ -29,7 +29,7 @@ public class ParameterAccess extends AbstractAccess {
 	/* (non-Javadoc)
 	 * @see fr.n7.stl.block.ast.expression.AbstractUse#getDeclaration()
 	 */
-	public Declaration getDeclaration() {
+	public ParameterDeclaration getDeclaration() {
 		return this.declaration;
 	}
 

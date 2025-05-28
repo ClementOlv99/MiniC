@@ -1,29 +1,90 @@
-JUMP SKIPFUNCfact
-FUNCfact
-;(n == 0)
-LOAD (1) -1[LB]
+PUSH 4
 LOADL 0
-SUBR IEq
-JUMPIF (0) ELSE1
 LOADL 1
-RETURN (1) 1
-JUMP END_IF_ELSE1
-ELSE1
-;(n * int fact( int n )( (n - 1)))
-LOAD (1) -1[LB]
-;(n - 1)
-LOAD (1) -1[LB]
+LOADL 2
+LOADL 3
+STORE (4) 0[SB]
+PUSH 16
 LOADL 1
-SUBR ISub
-CALL (LB) FUNCfact
-SUBR IMul
-RETURN (1) 1
-END_IF_ELSE1
-SKIPFUNCfact
-;print int fact( int n )( 5);
+LOADL 1
+LOADL 1
+LOADL 2
+LOADL 1
+LOADL 2
+LOADL 2
+LOADL 2
+LOADL 2
+LOADL 2
+LOADL 2
+LOADL 1
+LOADL 2
+LOADL 1
+LOADL 1
+LOADL 1
+STORE (16) 4[SB]
+PUSH 1
+LOADA 4[SB]
+LOADL 0
+SUBR IAdd
+LOADL 0
+SUBR IAdd
+LOADL 0
+SUBR IAdd
+LOADI (1)
+STORE (1) 20[SB]
+PUSH 1
+LOADA 0[SB]
+LOADL 0
+SUBR IAdd
+LOADL 0
+SUBR IAdd
+LOADI (1)
+STORE (1) 21[SB]
+PUSH 1
+LOADA 0[SB]
+LOADL 2
+SUBR IAdd
+LOADL 1
+SUBR IAdd
+LOADI (1)
+STORE (1) 22[SB]
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@5679c6c6
+; s .ext2.x = x1;
 
-LOADL 5
-CALL (LB) FUNCfact
+LOAD (1) 21[SB]
+; s .ext2.x
+LOADA 0[SB]
+LOADL 2
+SUBR IAdd
+LOADL 0
+SUBR IAdd
+STOREI (1)
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@27ddd392
+; s .ext1.y = y2;
+
+LOAD (1) 22[SB]
+; s .ext1.y
+LOADA 0[SB]
+LOADL 0
+SUBR IAdd
+LOADL 1
+SUBR IAdd
+STOREI (1)
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@19e1023e
+;print x1;
+
+LOAD (1) 21[SB]
 SUBR IOut
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@7cef4e59
+;print y2;
+
+LOAD (1) 22[SB]
+SUBR IOut
+;fr.n7.stl.minic.ast.expression.accessible.VariableAccess@64b8f8f4
+;print x3;
+
+LOAD (1) 20[SB]
+SUBR IOut
+POP (0) 23
 HALT
 

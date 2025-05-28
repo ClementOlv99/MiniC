@@ -51,19 +51,9 @@ public class TypeDeclaration implements Declaration, Instruction {
 	 */
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope) {
-		if(this.type instanceof RecordType rcd){
-			for (FieldDeclaration field : rcd.getFields()) {
-				if(_scope.accepts(field)) {
-					_scope.register(field);
-				} else {
-					Logger.warning("Type" + this.name + "Is already defined");
-					return false;
-				}
-			}			
-		} 
 		if(_scope.accepts(this)) {
 			_scope.register(this);
-			return true;
+			return type.completeResolve(_scope);
 		} else {
 			Logger.warning("Type" + this.name + "Is already defined");
 			return false;
@@ -72,23 +62,9 @@ public class TypeDeclaration implements Declaration, Instruction {
 	
 	@Override
 	public boolean collectAndPartialResolve(HierarchicalScope<Declaration> _scope, FunctionDeclaration _container) {
-		if(this.type instanceof RecordType rcd){
-			for (FieldDeclaration field : rcd.getFields()) {
-				if(_scope.accepts(field)) {
-					_scope.register(field);
-					return true;
-				} else {
-					Logger.warning("Type" + this.name + "Is already defined");
-					return false;
-				}
-			}	
-			if(_scope.accepts(rcd)){
-				_scope.register(rcd);
-			}		
-		} 
 		if(_scope.accepts(this)) {
 			_scope.register(this);
-			return true;
+			return type.completeResolve(_scope);
 		} else {
 			Logger.warning("Type" + this.name + "Is already defined");
 			return false;
