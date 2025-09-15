@@ -1,4 +1,4 @@
-This project was to build a Compiler in Java that would take code written in a language similar to C (Block) parse it then compile it into TAM assembly which would get executed by a TAM Machine, to execute them in TAM assembly. 
+The goal of this project was to build a Compiler in Java that would take code written in a language similar to C (Block) parse it then compile it into TAM assembly which would get executed by a TAM Machine, to execute them in TAM assembly. 
 
 The Parser and Lexer are in the MiniCParser.G4 file and MiniCLexer.G4 file respectively. The Abstract tree is then built in the ASTBuilder.java file. 
 
